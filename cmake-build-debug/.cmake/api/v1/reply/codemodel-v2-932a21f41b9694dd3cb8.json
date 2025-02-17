@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.30"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "C___2025_CA1",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "C___2025_CA1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-C___2025_CA1-Debug-7791589cdddddb7aeb62.json",
+					"name" : "C___2025_CA1",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/lukekirwan/Library/CloudStorage/OneDrive-DundalkInstituteofTechnology/Year2/Semester 2/C++/Assesment 2025/C++_2025_CA1/cmake-build-debug",
+		"source" : "/Users/lukekirwan/Library/CloudStorage/OneDrive-DundalkInstituteofTechnology/Year2/Semester 2/C++/Assesment 2025/C++_2025_CA1"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
