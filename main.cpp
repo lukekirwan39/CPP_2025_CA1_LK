@@ -18,6 +18,8 @@ struct Music {
 void readCSV();
 void parse(string line, vector<Music>& musicList);
 void displayMusic(const vector<Music>& musicList);
+int searchTrackByName(const vector<Music>& musicList, const string& trackName);
+void displayTrack(const vector<Music>& musicList, int index);
 
 int main() {
     readCSV();
@@ -60,6 +62,15 @@ void displayTrack(const vector<Music>& musicList, int index){
     }
 }
 
+int searchTrackByName(const vector<Music>& musicList, const string& trackName) {
+    for (int i = 0; i < musicList.size(); i++){
+        if (musicList[i].track_name == trackName){
+            return i;
+        }
+    }
+    return -1;
+}
+
 void displayMusic(const vector<Music>& musicList) {
     cout << "-------------------------------------------------------------" << endl;
     cout << " Track Name | Artist        | Genre       | BPM  | Pop. | Dur." << endl;
@@ -97,6 +108,15 @@ void readCSV() {
 
         // Display parsed data
         displayMusic(musicList);
+
+        // Asking the user to search for a track
+        string tackName;
+        cout << "Enter track name: ";
+        getline(cin, tackName);
+
+        int index = searchTrackByName(musicList, tackName);
+        displayTrack(musicList, index);
+
 
     } else {
         cout << "File Not Found" << endl;
