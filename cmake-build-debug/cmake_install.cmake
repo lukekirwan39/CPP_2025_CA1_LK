@@ -1,4 +1,4 @@
-# Install script for directory: /Users/lukekirwan/Library/CloudStorage/OneDrive-DundalkInstituteofTechnology/Year2/Semester 2/C++/Assesment 2025/C++_2025_CA1
+# Install script for directory: /Users/lukekirwan/Library/CloudStorage/OneDrive-DundalkInstituteofTechnology/Year2/Semester 2/C++/Assesment 2025/CPP_2025_CA1
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -52,6 +52,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "/Users/lukekirwan/Library/CloudStorage/OneDrive-DundalkInstituteofTechnology/Year2/Semester 2/C++/Assesment 2025/C++_2025_CA1/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "/Users/lukekirwan/Library/CloudStorage/OneDrive-DundalkInstituteofTechnology/Year2/Semester 2/C++/Assesment 2025/CPP_2025_CA1/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()
