@@ -6,7 +6,7 @@
 
 using namespace std;
 
-struct Music {
+struct Music{
     string track_name;
     string artist;
     string genre;
@@ -21,13 +21,14 @@ void displayMusic(const vector<Music>& musicList);
 int searchTrackByName(const vector<Music>& musicList, const string& trackName);
 void displayTrack(const vector<Music>& musicList, int index);
 map<string, int> countByGenre(const vector<Music>& musicList);
+void displayByGenre(const vector<Music>& musicList, const string& genre);
 
-int main() {
+int main(){
     readCSV();
     return 0;
 }
 
-void parse(string line, vector<Music>& musicList) {
+void parse(string line, vector<Music>& musicList){
     stringstream ss(line);
     string temp;
     Music music;
@@ -37,13 +38,13 @@ void parse(string line, vector<Music>& musicList) {
     getline(ss, music.genre, ',');
 
     getline(ss, temp, ',');
-    music.bpm = stoi(temp);  // BPM to int
+    music.bpm = stoi(temp); // BPM to int
 
     getline(ss, temp, ',');
-    music.popularity = stod(temp);  // Popularity to double
+    music.popularity = stod(temp); // Popularity to double
 
     getline(ss, temp, ',');
-    music.duration = stod(temp);  // Duration to double
+    music.duration = stod(temp); // Duration to double
 
     musicList.push_back(music);
 }
@@ -53,12 +54,13 @@ void displayTrack(const vector<Music>& musicList, int index){
         const auto& music = musicList[index];
         cout << "Track Found: \n";
         cout << "Track Name: " << music.track_name << "\n"
-        << "Artist: " << music.artist << "\n"
-        << "Genre: " << music.genre << "\n"
-        << "BPM: " << music.bpm << "\n"
-        << "Popularity: " << music.popularity << "\n"
-        << "Duration: " << music.duration << " min\n";
-    }else{
+            << "Artist: " << music.artist << "\n"
+            << "Genre: " << music.genre << "\n"
+            << "BPM: " << music.bpm << "\n"
+            << "Popularity: " << music.popularity << "\n"
+            << "Duration: " << music.duration << " min\n";
+    }
+    else{
         cout << "Track not found" << endl;
     }
 }
@@ -71,7 +73,7 @@ map<string, int> countByGenre(const vector<Music>& musicList){
     return genreCount;
 }
 
-int searchTrackByName(const vector<Music>& musicList, const string& trackName) {
+int searchTrackByName(const vector<Music>& musicList, const string& trackName){
     for (int i = 0; i < musicList.size(); i++){
         if (musicList[i].track_name == trackName){
             return i;
@@ -80,37 +82,65 @@ int searchTrackByName(const vector<Music>& musicList, const string& trackName) {
     return -1;
 }
 
-void displayMusic(const vector<Music>& musicList) {
+void displayMusic(const vector<Music>& musicList){
     cout << "-------------------------------------------------------------" << endl;
     cout << " Track Name | Artist        | Genre       | BPM  | Pop. | Dur." << endl;
     cout << "-------------------------------------------------------------" << endl;
 
-    for (const auto& music : musicList) {
+    for (const auto& music : musicList){
         cout << " " << music.track_name
-             << " | " << music.artist
-             << " | " << music.genre
-             << " | " << music.bpm
-             << " | " << music.popularity
-             << " | " << music.duration << " min"
-             << endl;
+            << " | " << music.artist
+            << " | " << music.genre
+            << " | " << music.bpm
+            << " | " << music.popularity
+            << " | " << music.duration << " min"
+            << endl;
     }
     cout << "-------------------------------------------------------------\n";
 }
 
-void readCSV() {
+void displayByGenre(const vector<Music>& musicList, const string& genre){
+    cout << "\nTracks in Genres: " << genre << endl;
+    cout << "-------------------------------------------------------------" << endl;
+    cout << " Track Name | Artist        | Genre       | BPM  | Pop. | Dur." << endl;
+    cout << "-------------------------------------------------------------" << endl;
+
+    bool found = false;
+    for (const auto& music : musicList){
+        if (music.genre == genre){
+            cout << " " << music.track_name
+            << " | " << music.artist
+            << " | " << music.genre
+            << " | " << music.bpm
+            << " | " << music.popularity
+            << " | " << music.duration << " min"
+            << endl;
+            found = true;
+        }
+    }
+
+    if (!found){
+        cout << "Track not found-" << endl;
+    }
+
+    cout << "-------------------------------------------------------------\n";
+}
+
+
+void readCSV(){
     ifstream fin("modern_music_data.csv");
     string line;
     vector<Music> musicList;
 
-    if (fin) {
+    if (fin){
         // Read and discard the first line (header)
-        if (getline(fin, line)) {
+        if (getline(fin, line)){
             cout << line << endl;
         }
 
         // Read each line and parse it
-        while (getline(fin, line)) {
-            if (!line.empty()) {
+        while (getline(fin, line)){
+            if (!line.empty()){
                 parse(line, musicList);
             }
         }
@@ -133,7 +163,13 @@ void readCSV() {
             cout << genre << ": " << count << endl;
         }
 
-    } else {
+        // Display tracks by user-specified genre
+        string genre;
+        cout << "Enter genre to filter: ";
+        getline(cin, genre);
+        displayByGenre(musicList, genre);
+    }
+    else{
         cout << "File Not Found" << endl;
     }
 }
