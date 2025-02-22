@@ -20,6 +20,7 @@ void parse(string line, vector<Music>& musicList);
 void displayMusic(const vector<Music>& musicList);
 int searchTrackByName(const vector<Music>& musicList, const string& trackName);
 void displayTrack(const vector<Music>& musicList, int index);
+map<string, int> countByGenre(const vector<Music>& musicList);
 
 int main() {
     readCSV();
@@ -60,6 +61,14 @@ void displayTrack(const vector<Music>& musicList, int index){
     }else{
         cout << "Track not found" << endl;
     }
+}
+
+map<string, int> countByGenre(const vector<Music>& musicList){
+    map<string, int> genreCount;
+    for (const auto& music : musicList){
+        genreCount[music.genre]++;
+    }
+    return genreCount;
 }
 
 int searchTrackByName(const vector<Music>& musicList, const string& trackName) {
@@ -117,6 +126,12 @@ void readCSV() {
         int index = searchTrackByName(musicList, tackName);
         displayTrack(musicList, index);
 
+        // Count and display genres
+        map<string, int> genreCount = countByGenre(musicList);
+        cout << "\nGenre Count: \n";
+        for (const auto& [genre, count] : genreCount){
+            cout << genre << ": " << count << endl;
+        }
 
     } else {
         cout << "File Not Found" << endl;
