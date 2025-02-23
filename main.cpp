@@ -16,24 +16,110 @@ struct Music{
     double duration;
 };
 
-void readCSV();
+void readCSV(vector<Music>& musicList);
 void parse(string line, vector<Music>& musicList);
 void displayMusic(const vector<Music>& musicList);
 int searchTrackByName(const vector<Music>& musicList, const string& trackName);
 void displayTrack(const vector<Music>& musicList, int index);
 map<string, int> countByGenre(const vector<Music>& musicList);
 void displayByGenre(const vector<Music>& musicList, const string& genre);
-void averageBPM(vector<Music>& musicList);
+int calculateAverageBPM(const vector<Music>& musicList);
 Music findHighestBPM(const vector<Music>& musicList);
 Music findLowestBPM(const vector<Music>& musicList);
 vector<Music> searchTrackByPartialInput(const vector<Music>& musicList, const string& searchTerm);
 bool compareByPopularity(const Music& a, const Music& b);
 void displaySortedByPopularity(vector<Music>& musicList);
 
-int main(){
-    readCSV();
+int main() {
+    vector<Music> musicList;
+    readCSV(musicList);  // Now it will modify the musicList vector
+
+    int choice;
+    string trackName, genre, searchTerm;
+    int index, averageBPM;
+    Music highestBPM, lowestBPM;
+    vector<Music> searchResults;
+    map<string, int> genreCount;
+
+    do {
+        cout << "\n==== Music Menu ====\n";
+        cout << "1. Display All Tracks\n";
+        cout << "2. Search Track by Name\n";
+        cout << "3. Display Tracks by Genre\n";
+        cout << "4. Display Highest, Lowest and Average BPM\n";
+        cout << "5. Search Tracks by Partial Name\n";
+        cout << "6. Display Tracks Sorted by Popularity in Descending\n";
+        cout << "7. Exit\n";
+        cout << "Enter your choice: ";
+
+        while (!(cin >> choice) || choice < 1 || choice > 7) {
+            cin.clear();  // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Ignore incorrect input
+            cout << "Invalid input. Please enter a number between 1 and 7: ";
+        }
+
+        cin.ignore();
+
+        switch (choice) {
+        case 1:
+            displayMusic(musicList);
+            break;
+        case 2:
+            cout << "Enter track name: ";
+            getline(cin, trackName);
+
+            index = searchTrackByName(musicList, trackName);
+            displayTrack(musicList, index);
+            break;
+        case 3:
+            genreCount = countByGenre(musicList);
+            cout << "\nGenre Count: \n";
+            for (const auto& [genre, count] : genreCount) {
+                cout << genre << ": " << count << endl;
+            }
+
+            cout << "Enter genre to filter: ";
+            getline(cin, genre);
+            displayByGenre(musicList, genre);
+            break;
+        case 4:
+            averageBPM = calculateAverageBPM(musicList);
+            highestBPM = findHighestBPM(musicList);
+            lowestBPM = findLowestBPM(musicList);
+
+            cout << "Average BPM: " << averageBPM << "\n";
+            cout << "Highest BPM Track: " << highestBPM.track_name << "(" << highestBPM.bpm << " BPM)\n";
+            cout << "Lowest BPM Track: " << lowestBPM.track_name << "(" << lowestBPM.bpm << " BPM)\n";
+            break;
+        case 5:
+            cout << "Input a track name: ";
+            getline(cin, searchTerm);
+
+            searchResults = searchTrackByPartialInput(musicList, searchTerm);
+
+            if (!searchResults.empty()) {
+                cout << "\nSearch Results: \n";
+                displayMusic(searchResults);
+            }
+            else {
+                cout << "\nTrack not found-" << endl;
+            }
+            break;
+        case 6:
+            displaySortedByPopularity(musicList);
+            break;
+        case 7:
+            cout << "Exiting program...\n";
+            break;
+        default:
+            cout << "Invalid choice.\n";
+            break;
+        }
+    } while (choice != 7);
+
     return 0;
 }
+
 
 void parse(string line, vector<Music>& musicList){
     stringstream ss(line);
@@ -64,8 +150,8 @@ void displayTrack(const vector<Music>& musicList, int index){
             << "Artist: " << music.artist << "\n"
             << "Genre: " << music.genre << "\n"
             << "BPM: " << music.bpm << "\n"
-            << "Popularity: " << music.popularity << "\n"
-            << "Duration: " << music.duration << " min\n";
+            << "Popularity: " << fixed << setprecision(2) << music.popularity << "\n"
+            << "Duration: " << fixed << setprecision(2) << music.duration << " min\n";
     }
     else{
         cout << "Track not found" << endl;
@@ -110,8 +196,8 @@ void displayMusic(const vector<Music>& musicList){
             << " | " << music.artist
             << " | " << music.genre
             << " | " << music.bpm
-            << " | " << music.popularity
-            << " | " << music.duration << " min"
+            << " | " << fixed << setprecision(2) << music.popularity
+            << " | " << fixed << setprecision(2) << music.duration << " min"
             << endl;
     }
     cout << "-------------------------------------------------------------\n";
@@ -127,12 +213,12 @@ void displayByGenre(const vector<Music>& musicList, const string& genre){
     for (const auto& music : musicList){
         if (music.genre == genre){
             cout << " " << music.track_name
-            << " | " << music.artist
-            << " | " << music.genre
-            << " | " << music.bpm
-            << " | " << music.popularity
-            << " | " << music.duration << " min"
-            << endl;
+                << " | " << music.artist
+                << " | " << music.genre
+                << " | " << music.bpm
+                << " | " << fixed << setprecision(2) << music.popularity
+                << " | " << fixed << setprecision(2) << music.duration << " min"
+                << endl;
             found = true;
         }
     }
@@ -199,10 +285,9 @@ Music findLowestBPM(const vector<Music>& musicList){
     return lowestBPM;
 }
 
-void readCSV(){
+void readCSV(vector<Music>& musicList){
     ifstream fin("modern_music_data.csv");
     string line;
-    vector<Music> musicList;
 
     if (fin){
         // Read and discard the first line (header)
@@ -216,56 +301,6 @@ void readCSV(){
                 parse(line, musicList);
             }
         }
-
-        // Display parsed data
-        displayMusic(musicList);
-
-        // Asking the user to search for a track
-        string tackName;
-        cout << "Enter track name: ";
-        getline(cin, tackName);
-
-        int index = searchTrackByName(musicList, tackName);
-        displayTrack(musicList, index);
-
-        // Count and display genres
-        map<string, int> genreCount = countByGenre(musicList);
-        cout << "\nGenre Count: \n";
-        for (const auto& [genre, count] : genreCount){
-            cout << genre << ": " << count << endl;
-        }
-
-        // Display tracks by user-specified genre
-        string genre;
-        cout << "Enter genre to filter: ";
-        getline(cin, genre);
-        displayByGenre(musicList, genre);
-
-        // Highest, lowest and average BPM
-        int averageBPM = calculateAverageBPM(musicList);
-        Music highestBPM = findHighestBPM(musicList);
-        Music lowestBPM = findLowestBPM(musicList);
-
-        cout << "Average BPM: " << averageBPM << "\n";
-        cout << "Highest BPM Track: " << highestBPM.track_name << "(" << highestBPM.bpm << " BPM)\n";
-        cout << "Lowest BPM Track: " << lowestBPM.track_name << "(" << lowestBPM.bpm << " BPM)\n";
-
-        // Search by Partial input
-        string searchTerm;
-        cout << "Input a track name: ";
-        getline(cin, searchTerm);
-
-        vector<Music> searchResults = searchTrackByPartialInput(musicList, searchTerm);
-
-        if (!searchResults.empty()){
-            cout << "\nSearch Results: \n";
-            displayMusic(searchResults);
-        }else{
-            cout << "\nTrack not found-" << endl;
-        }
-
-        // Display in descending order
-        displaySortedByPopularity(musicList);
     }
     else{
         cout << "File Not Found" << endl;
