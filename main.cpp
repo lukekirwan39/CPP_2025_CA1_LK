@@ -23,6 +23,8 @@ void displayTrack(const vector<Music>& musicList, int index);
 map<string, int> countByGenre(const vector<Music>& musicList);
 void displayByGenre(const vector<Music>& musicList, const string& genre);
 void averageBPM(vector<Music>& musicList);
+Music findHighestBPM(const vector<Music>& musicList);
+Music findLowestBPM(const vector<Music>& musicList);
 
 int main(){
     readCSV();
@@ -141,6 +143,35 @@ int calculateAverageBPM(const vector<Music>& musicList){
     return static_cast<int>(round(static_cast<double>(totalBPM) / musicList.size()));
 }
 
+Music findHighestBPM(const vector<Music>& musicList){
+    if (musicList.empty()){
+        return {};
+    }
+
+    Music highestBPM = musicList[0];
+    for (const auto& music : musicList){
+        if (music.bpm > highestBPM.bpm){
+            highestBPM = music;
+        }
+    }
+
+    return highestBPM;
+}
+
+Music findLowestBPM(const vector<Music>& musicList){
+    if (musicList.empty()){
+        return {};
+    }
+
+    Music lowestBPM = musicList[0];
+    for (const auto& music : musicList){
+        if (music.bpm < lowestBPM.bpm){
+            lowestBPM = music;
+        }
+    }
+
+    return lowestBPM;
+}
 
 void readCSV(){
     ifstream fin("modern_music_data.csv");
@@ -186,10 +217,12 @@ void readCSV(){
 
         // Highest, lowest and average BPM
         int averageBPM = calculateAverageBPM(musicList);
-        // const int highestBPM = highestBPM(musicList);
-        // const int lowestBPM = lowestBPM(musicList);
+        Music highestBPM = findHighestBPM(musicList);
+        Music lowestBPM = findLowestBPM(musicList);
 
         cout << "Average BPM: " << averageBPM << "\n";
+        cout << "Highest BPM Track: " << highestBPM.track_name << "(" << highestBPM.bpm << " BPM)\n";
+        cout << "Lowest BPM Track: " << lowestBPM.track_name << "(" << lowestBPM.bpm << " BPM)\n";
     }
     else{
         cout << "File Not Found" << endl;
