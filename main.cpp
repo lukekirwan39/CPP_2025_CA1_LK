@@ -25,6 +25,7 @@ void displayByGenre(const vector<Music>& musicList, const string& genre);
 void averageBPM(vector<Music>& musicList);
 Music findHighestBPM(const vector<Music>& musicList);
 Music findLowestBPM(const vector<Music>& musicList);
+vector<Music> searchTrackByPartialInput(const vector<Music>& musicList, const string& searchTerm);
 
 int main(){
     readCSV();
@@ -83,6 +84,17 @@ int searchTrackByName(const vector<Music>& musicList, const string& trackName){
         }
     }
     return -1;
+}
+
+vector<Music> searchTrackByPartialInput(const vector<Music>& musicList, const string& searchTerm){
+    vector<Music> result;
+
+    for (const auto& music : musicList){
+        if (music.track_name.find(searchTerm) != string::npos){
+            result.push_back(music);
+        }
+    }
+    return result;
 }
 
 void displayMusic(const vector<Music>& musicList){
@@ -223,6 +235,20 @@ void readCSV(){
         cout << "Average BPM: " << averageBPM << "\n";
         cout << "Highest BPM Track: " << highestBPM.track_name << "(" << highestBPM.bpm << " BPM)\n";
         cout << "Lowest BPM Track: " << lowestBPM.track_name << "(" << lowestBPM.bpm << " BPM)\n";
+
+        // Search by Partial input
+        string searchTerm;
+        cout << "Input a track name: ";
+        getline(cin, searchTerm);
+
+        vector<Music> searchResults = searchTrackByPartialInput(musicList, searchTerm);
+
+        if (!searchResults.empty()){
+            cout << "\nSearch Results: \n";
+            displayMusic(searchResults);
+        }else{
+            cout << "\nTrack not found-" << endl;
+        }
     }
     else{
         cout << "File Not Found" << endl;
