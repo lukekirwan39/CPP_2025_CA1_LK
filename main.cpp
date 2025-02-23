@@ -3,6 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 using namespace std;
 
@@ -26,6 +27,8 @@ void averageBPM(vector<Music>& musicList);
 Music findHighestBPM(const vector<Music>& musicList);
 Music findLowestBPM(const vector<Music>& musicList);
 vector<Music> searchTrackByPartialInput(const vector<Music>& musicList, const string& searchTerm);
+bool compareByPopularity(const Music& a, const Music& b);
+void displaySortedByPopularity(vector<Music>& musicList);
 
 int main(){
     readCSV();
@@ -141,6 +144,17 @@ void displayByGenre(const vector<Music>& musicList, const string& genre){
     cout << "-------------------------------------------------------------\n";
 }
 
+bool compareByPopularity(const Music& a, const Music& b){
+    return a.popularity > b.popularity; // Descending order
+}
+
+void displaySortedByPopularity(vector<Music>& musicList){
+    sort(musicList.begin(), musicList.end(), compareByPopularity);
+
+    displayMusic(musicList);
+}
+
+
 int calculateAverageBPM(const vector<Music>& musicList){
     if (musicList.empty()){
         return 0;
@@ -249,6 +263,9 @@ void readCSV(){
         }else{
             cout << "\nTrack not found-" << endl;
         }
+
+        // Display in descending order
+        displaySortedByPopularity(musicList);
     }
     else{
         cout << "File Not Found" << endl;
