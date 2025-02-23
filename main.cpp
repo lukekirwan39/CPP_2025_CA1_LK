@@ -22,6 +22,7 @@ int searchTrackByName(const vector<Music>& musicList, const string& trackName);
 void displayTrack(const vector<Music>& musicList, int index);
 map<string, int> countByGenre(const vector<Music>& musicList);
 void displayByGenre(const vector<Music>& musicList, const string& genre);
+void averageBPM(vector<Music>& musicList);
 
 int main(){
     readCSV();
@@ -126,6 +127,20 @@ void displayByGenre(const vector<Music>& musicList, const string& genre){
     cout << "-------------------------------------------------------------\n";
 }
 
+int calculateAverageBPM(const vector<Music>& musicList){
+    if (musicList.empty()){
+        return 0;
+    }
+
+    int totalBPM = 0;
+
+    for (const auto& music : musicList){
+        totalBPM += music.bpm;
+    }
+
+    return static_cast<int>(round(static_cast<double>(totalBPM) / musicList.size()));
+}
+
 
 void readCSV(){
     ifstream fin("modern_music_data.csv");
@@ -168,6 +183,13 @@ void readCSV(){
         cout << "Enter genre to filter: ";
         getline(cin, genre);
         displayByGenre(musicList, genre);
+
+        // Highest, lowest and average BPM
+        int averageBPM = calculateAverageBPM(musicList);
+        // const int highestBPM = highestBPM(musicList);
+        // const int lowestBPM = lowestBPM(musicList);
+
+        cout << "Average BPM: " << averageBPM << "\n";
     }
     else{
         cout << "File Not Found" << endl;
