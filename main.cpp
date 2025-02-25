@@ -188,7 +188,7 @@ vector<Music> searchTrackByPartialInput(const vector<Music>& musicList, const st
 
 void displayMusic(const vector<Music>& musicList){
     cout << "-------------------------------------------------------------" << endl;
-    cout << " Track Name | Artist        | Genre       | BPM  | Pop. | Dur." << endl;
+    cout << " Track Name | Artist   | Genre   | BPM  | Pop. | Dur." << endl;
     cout << "-------------------------------------------------------------" << endl;
 
     for (const auto& music : musicList){
@@ -206,7 +206,7 @@ void displayMusic(const vector<Music>& musicList){
 void displayByGenre(const vector<Music>& musicList, const string& genre){
     cout << "\nTracks in Genres: " << genre << endl;
     cout << "-------------------------------------------------------------" << endl;
-    cout << " Track Name | Artist        | Genre       | BPM  | Pop. | Dur." << endl;
+    cout << " Track Name | Artist   | Genre   | BPM  | Pop. | Dur." << endl;
     cout << "-------------------------------------------------------------" << endl;
 
     bool found = false;
