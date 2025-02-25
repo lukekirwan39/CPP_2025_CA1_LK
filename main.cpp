@@ -144,7 +144,7 @@ void parse(string line, vector<Music>& musicList){
 
 void displayTrack(const vector<Music>& musicList, int index){
     if (index != -1){
-        const auto& music = musicList[index];
+        const Music& music = musicList[index];
         cout << "Track Found: \n";
         cout << "Track Name: " << music.track_name << "\n"
             << "Artist: " << music.artist << "\n"
@@ -160,7 +160,7 @@ void displayTrack(const vector<Music>& musicList, int index){
 
 map<string, int> countByGenre(const vector<Music>& musicList){
     map<string, int> genreCount;
-    for (const auto& music : musicList){
+    for (const Music& music : musicList){
         genreCount[music.genre]++;
     }
     return genreCount;
@@ -178,7 +178,7 @@ int searchTrackByName(const vector<Music>& musicList, const string& trackName){
 vector<Music> searchTrackByPartialInput(const vector<Music>& musicList, const string& searchTerm){
     vector<Music> result;
 
-    for (const auto& music : musicList){
+    for (const Music& music : musicList){
         if (music.track_name.find(searchTerm) != string::npos){
             result.push_back(music);
         }
@@ -191,7 +191,7 @@ void displayMusic(const vector<Music>& musicList){
     cout << " Track Name | Artist   | Genre   | BPM  | Pop. | Dur." << endl;
     cout << "-------------------------------------------------------------" << endl;
 
-    for (const auto& music : musicList){
+    for (const Music& music : musicList){
         cout << " " << music.track_name
             << " | " << music.artist
             << " | " << music.genre
@@ -210,7 +210,7 @@ void displayByGenre(const vector<Music>& musicList, const string& genre){
     cout << "-------------------------------------------------------------" << endl;
 
     bool found = false;
-    for (const auto& music : musicList){
+    for (const Music& music : musicList){
         if (music.genre == genre){
             cout << " " << music.track_name
                 << " | " << music.artist
@@ -248,7 +248,7 @@ int calculateAverageBPM(const vector<Music>& musicList){
 
     int totalBPM = 0;
 
-    for (const auto& music : musicList){
+    for (const Music& music : musicList){
         totalBPM += music.bpm;
     }
 
@@ -261,7 +261,7 @@ Music findHighestBPM(const vector<Music>& musicList){
     }
 
     Music highestBPM = musicList[0];
-    for (const auto& music : musicList){
+    for (const Music& music : musicList){
         if (music.bpm > highestBPM.bpm){
             highestBPM = music;
         }
@@ -276,7 +276,7 @@ Music findLowestBPM(const vector<Music>& musicList){
     }
 
     Music lowestBPM = musicList[0];
-    for (const auto& music : musicList){
+    for (const Music& music : musicList){
         if (music.bpm < lowestBPM.bpm){
             lowestBPM = music;
         }
